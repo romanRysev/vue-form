@@ -39,11 +39,11 @@
 const bcrypt = require("bcryptjs");
 
 export default {
-  data: function() {
+  data: function() { // для задачи такого масштаба подключать vuex нет необходимости. Состояние храним в data.
     return {
       email: "",
       password: "",
-      user: { email: "gora@studio.ru", password: "2020" },
+      user: { email: "gora@studio.ru", password: "2020" },  // Есть 1 зарегистрированный пользователь. С ним и сравниваем данные из формы.
       isLoggedIn: false,
     };
   },
@@ -53,7 +53,7 @@ export default {
   },
 
   methods: {
-    checkLogin(data) {
+    checkLogin(data) {  // Метод проверяет, совпадают ли данные в localstorage с данными имеющегося пользователя.
       if (localStorage.user) {
         const userInStorage = JSON.parse(localStorage.user);
         if (userInStorage.email == data.email) {
@@ -73,9 +73,9 @@ export default {
         return (this.isLoggedIn = false);
       }
     },
-    logIn() {
+    logIn() {  // Метод отправляет данные из формы в localstorage.
       event.preventDefault();
-      bcrypt
+      bcrypt  // Пароли шифруем.
         .hash(this.password, 10)
         .then((hash) => {
           localStorage.setItem(
@@ -92,13 +92,13 @@ export default {
       localStorage.removeItem("user");
       this.checkLogin(this.user);
     },
-    checkInputValidity(element) {
+    checkInputValidity(element) {  // Проверяет валидность данных в форме
       if (!element.checkValidity()) {
         return false;
       }
       return true;
     },
-    setSubmitButtonState(result, element) {
+    setSubmitButtonState(result, element) {  // Меняет состояние кнопки формы, исходя из результатов валидации
       const button = element.parentElement.querySelector(".form__button");
       if (result) {
         button.classList.remove("button_disabled");
